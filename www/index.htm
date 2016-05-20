@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>ngrok</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/apps/nastools-ngrok/css/bootstrap-2.3.2-combined.min.css" rel="stylesheet">
+<link href="/apps/nastools-ngrok/css/ngrok.css" rel="stylesheet">
+<script src="/apps/nastools-ngrok/js/jquery-1.9.0.js"></script>
+<script src="/apps/nastools-ngrok/js/bootstrap-2.3.2.min.js"></script>
+<script src="/apps/nastools-ngrok/js/knockout-2.2.1.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-inner">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="brand" href="#">ngrok</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/apps/nastools-ngrok/status">Server Status</a></li>
+                <li><a href="/apps/nastools-ngrok/inspect/http">Traffic Inspector</a></li>
+                <li><a href="https://ngrok.com" target="_new">ngrok.com</a></li>
+                <li><a href="https://ngrok.com/docs" target="_new">Docs</a></li>
+                <li><a href="https://ngrok.com/faq" target="_new">FAQ</a></li>
+                <li><a href="https://dashboard.ngrok.com/user/login" target="_new">User Dashboard</a></li>
+                <li><a data-toggle="modal" href="#about">About</a></li>
+                <li><a data-toggle="modal" href="#help">Help</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="main" class="container">
+        <table class="table table-striped">
+            <tr>
+                <td><b>Name</b></td>
+                <td><b>URL</b></td>
+                <td><b>Protocol</b></td>
+                <td><b>Address</b></td>
+                <td><b>Inspection</b></td>
+                <td></td>
+            </tr>
+            <!-- ko foreach: tunnels -->
+            <tr>
+                <td><p><b data-bind="text: name"></b></p></td>
+                <td><p><b><a data-bind="attr: { href: public_url }, text: public_url" target="_blank"></a></b></p></td>
+                <td><p><b data-bind="text: proto"></b></p></td>
+                <td><p><b data-bind="text: addr"></b></p></td>
+                <td><p><b data-bind="text: inspect"></b></p></td>
+                <td>
+                    <button data-bind="click: $parent.remove" class="btn">Delete</button>
+                </td>
+            </tr>
+            <!-- /ko -->
+        </table>
+        <button data-bind="click: beginAdd" class="btn">Add Tunnel</button>
+    </div>
+    <div id="add" class="modal hide fade" tabindex="=1" role="dialog">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3 id="addDialogLabel">Add Tunnel</h3>
+            <small>Fields in red are required...</small>
+        </div>
+        <div class="modal-body">
+            <form class="form-horizontal">
+                <div class="control-group">
+                    <label class="control-label required" for="inputProtocol">Protocol</label>
+                    <div class="controls">
+                        <select data-bind="value: proto">
+                            <option value="http">HTTP</option>
+                            <option value="tcp">TCP</option>
+                            <option value="tls">TLS</option>
+                        </select>
+                        <p data-bind="visible: proto() === 'tcp'"><small>TCP tunnels require an account</small></p>
+                        <p data-bind="visible: proto() === 'tls'"><small>TLS tunnels require a paid account</small></p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label required" for="inputName">Name</label>
+                    <div class="controls">
+                        <input data-bind="value: name" type="text" id="inputName" placeholder="Name" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label required" for="inputAddress">Address</label>
+                    <div class="controls">
+                        <input data-bind="value: addr" type="text" id="inputAddress" placeholder="Address" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="inputInspect">Inspection</label>
+                    <div class="controls">
+                        <input data-bind="checked: inspect" type="checkbox" id="inputInspect">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'http'">
+                    <label class="control-label" for="inputAuth">Authentication</label>
+                    <div class="controls">
+                        <input data-bind="value: auth" type="text" id="inputAuth" placeholder="user:pass" style="width: 300px;">
+                        <p><small>Authentication requires an account</small></p>
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'http'">
+                    <label class="control-label" for="inputHostHeader">Host Header</label>
+                    <div class="controls">
+                        <input data-bind="value: host_header" type="text" id="inputHostHeader" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'http'">
+                    <label class="control-label" for="inputBindTLS">Bind TLS</label>
+                    <div class="controls">
+                        <select data-bind="value: bind_tls">
+                            <option value="both">Both</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'http' || proto() === 'tls'">
+                    <label class="control-label" for="inputSubdomain">Subdomain</label>
+                    <div class="controls">
+                        <input data-bind="value: subdomain" type="text" id="inputSubdomain" style="width: 300px;">
+                        <p><small>Subdomains require a paid account</small></p>
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'http' || proto() === 'tls'">
+                    <label class="control-label" for="inputHostname">Hostname</label>
+                    <div class="controls">
+                        <input data-bind="value: subdomain" type="text" id="inputHostname" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'tls'">
+                    <label class="control-label" for="inputCRT">Certificate</label>
+                    <div class="controls">
+                        <input data-bind="value: crt" type="text" id="inputCRT" placeholder="/path/to/ssl.crt" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'tls'">
+                    <label class="control-label" for="inputKey">Key</label>
+                    <div class="controls">
+                        <input data-bind="value: key" type="text" id="inputKey" placeholder="/path/to/ssl.key" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'tls'">
+                    <label class="control-label" for="inputClientCAS">Client CAS</label>
+                    <div class="controls">
+                        <input data-bind="value: client_cas" type="text" id="inputClientCAS" placeholder="/path/to/client.cas" style="width: 300px;">
+                    </div>
+                </div>
+                <div class="control-group" data-bind="visible: proto() === 'tcp'">
+                    <label class="control-label" for="inputRemoteAddr">Remote Address</label>
+                    <div class="controls">
+                        <input data-bind="value: remote_addr" type="text" id="inputRemoteAddr" placeholder="Address" style="width: 300px;">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button data-bind="click: addTunnel" class="btn btn-primary">Add Tunnel</button>
+            <button class="btn" data-dismiss="modal">Cancel</button>
+        </div>
+    </div>
+    <div id="error" class="modal hide fade" tabindex="=1" role="dialog">
+        <div class="modal-header">
+            <h3 id="errorLabel">Error</h3>
+        </div>
+        <div class="modal-body">
+            <dl class="dl-horizontal">
+                <dt>Error code</dt>
+                <dd data-bind="text: error_code"></dd>
+                <dt>Status code</dt>
+                <dd data-bind="text: error_status_code"></dd>
+                <dt>Message</dt>
+                <dd data-bind="text: error_msg"></dd>
+                <dt>Details</dt>
+                <dd data-bind="text: error_details"></dd>
+            </dl>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Okay</button>
+        </div>
+    </div>
+    <div id="about" class="modal hide fade" tabindex="=1" role="dialog">
+        <div class="modal-header">
+            <h3 id="aboutLabel">About ngrok</h3>
+        </div>
+        <div class="modal-body">
+            <p>The ngrok client included in this app <small>(/apps/nastools-ngrok/bin/ngrok)</small> is</p>
+            <p>&copy; Alan Shreve (inconshreveable) &lt;alan@ngrok.com&gt;.</p>
+            <p></p>
+            <p>This web interface for managing ngrok tunnels is brought to you by</p>
+            <p>NAStools &lt;dev@nas.tools&gt;.</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Okay</button>
+        </div>
+    </div>
+    <div id="help" class="modal hide fade" tabindex="=1" role="dialog">
+        <div class="modal-header">
+            <h3 id="helpLabel">Help</h3>
+        </div>
+        <div class="modal-body">
+            <h4>Binding to an account</h4>
+            <p>The ngrok client uses an authentication token (authtoken) to bind to your account.</p>
+            <p>Your authtoken can be obtained by logging in to the <a href="https://dashboard.ngrok.com" target="_new">ngrok dashboard</a>.</p>
+            <p>It can be installed by editing the configuration file:</p>
+            <ol>
+                <li>Login to the NAS via SMB with the <em>admin</em> account.</li>
+                <li>Open the volume share. The default volume name is <em>data</em>, but this can differ.</li>
+                <li>Browse to the <em>.apps\nastools-ngrok</em> folder.</li>
+                <li>Edit the <em>ngrok.yml</em> file and insert your authtoken.</li>
+                <li>Restart the <em>ngrok NT</em> app from the NAS web interface.</li>
+            </ol>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal">Okay</button>
+        </div>
+    </div>
+    <script src="/apps/nastools-ngrok/js/ngrok.js"></script>
+</body>
+</html>
