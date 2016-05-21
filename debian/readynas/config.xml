@@ -1,5 +1,5 @@
 <Application resource-id="nastools-ngrok">
-  <Version></Version>
+  <Version>2.1.1-nt1</Version>
   <MinFirmwareVer>6.5.0</MinFirmwareVer>
   <Name>ngrok NT</Name>
   <Author>NAStools</Author>
