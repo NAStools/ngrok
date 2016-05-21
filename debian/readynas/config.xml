@@ -1,0 +1,13 @@
+<Application resource-id="nastools-ngrok">
+  <Version></Version>
+  <MinFirmwareVer>6.5.0</MinFirmwareVer>
+  <Name>ngrok NT</Name>
+  <Author>NAStools</Author>
+  <RequireReboot>0</RequireReboot>
+  <LaunchURL>https://localhost/apps/nastools-ngrok</LaunchURL>
+  <InfoURL>https://github.com/nastools/ngrok</InfoURL>
+  <DebianPackage>nastools-ngrok</DebianPackage>
+  <Description lang="en-us">Secure tunnels to localhost</Description>
+  <ServiceName>fvapp-nastools-ngrok.service</ServiceName>
+  <ConfigURL/>
+</Application>

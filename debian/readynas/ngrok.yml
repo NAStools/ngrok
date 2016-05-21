@@ -1,0 +1,165 @@
+## authtoken
+#
+# This option specifies the authentication token used to authenticate this
+# client when it connects to the ngrok.com service. After you've created an
+# ngrok.com account, your dashboard will display the authtoken assigned to your
+# account.
+#
+# authtoken:
+
+## region
+#
+# Choose the region where the ngrok client will connect to host its tunnels.
+#
+# us (United States)
+# eu (Europe)
+# ap (Asia/Pacific)
+# au (Australia)
+#
+# region: us
+
+## console_ui
+#
+# true: enable the console UI
+# false: disable the console UI
+# iftty: enable the UI only if standard out is a TTY (not a file or pipe)
+#
+# console_ui: true
+
+# compress_conn: false
+
+## http_proxy
+#
+# URL of an HTTP proxy to use for establishing the tunnel connection. Many HTTP
+# proxies have connection size and duration limits that will cause ngrok to
+# fail. Like many other networking tools, ngrok will also respect the
+# environment variable http_proxy if it is set.
+#
+# http_proxy: "http://user:password@proxy.company:3128"
+# http_proxy: false
+
+## inspect_db_size
+#
+# positive integers: size in bytes of the upper limit on memory to allocate to
+#                    save requests over HTTP tunnels for inspection and replay.
+# 0: use the default allocation limit, 50MB
+# -1: disable the inspection database; this has the effective behavior of
+#     disabling inspection for all tunnels
+#
+# inspect_db_size: 0
+
+## log_level
+#
+# Logging level of detail. In increasing order of verbosity, possible values
+# are: crit,warn,error,info,debug
+#
+# log_level: info
+
+## log_format
+#
+# Format of written log records.
+#
+# logfmt: human and machine friendly key/value pairs
+# json: newline-separated JSON objects
+# term: custom colored human format if standard out is a TTY, otherwise same as
+#       logfmt
+#
+# log_format: json
+
+## log
+# Write logs to this target destination.
+#
+# stdout: write to standard out
+# stderr: write to standard error
+# false: disable logging
+# other values: write log records to file path on disk
+#
+# log: /apps/nastools-ngrok/ngrok.log
+
+## metadata
+# Opaque, user-supplied string that will be returned as part of the ngrok.com
+# API response to the List Online Tunnels resource for all tunnels started by
+# this client. This is a useful mechanism to identify tunnels by your own
+# device or customer identifier. Maximum 4096 characters.
+#
+# metadata: '{"serial": "00012xa-33rUtz9", "comment": "For customer alan@example.com"}'
+
+## root_cas
+#
+# The root certificate authorities used to validate the TLS connection to the
+# ngrok server.
+#
+# trusted: use only the trusted certificate root for the ngrok.com tunnel
+#          service
+# host: use the root certificates trusted by the host's operating system. You
+#       will likely want to use this option to connect to third-party ngrok
+#       servers.
+# other values: path to a certificate PEM file on disk with certificate
+#               authorities to trust
+#
+# root_cas: trusted
+
+## socks5_proxy
+#
+# URL of a SOCKS5 proxy to use for establishing a connection to the ngrok
+# server.
+#
+# socks5_proxy: "socks5://localhost:9150"
+
+## update
+#
+# true: automatically update ngrok to the latest version, when available
+# false: never update ngrok unless manually initiated by the user
+# update: true
+
+## update_channel
+#
+# The update channel determines the stability of released builds to update to.
+# Use 'stable' for all production deployments.
+#
+# stable: update to new stable builds when available
+# beta: update to new beta builds when available
+#
+update_channel: beta
+
+## web_addr
+#
+# Network address to bind on for serving the local web interface and api.
+#
+# web_addr: localhost:4040
+
+## Sample tunnel configuration
+#tunnels:
+# website:
+#   addr: 8888
+#   auth: bob:bobpassword
+#   bind_tls: true
+#   host_header: "myapp.dev"
+#   inspect: false
+#   proto: http
+#   subdomain: myapp
+# 
+# e2etls:
+#   addr: 9000
+#   proto: tls
+#   hostname: myapp.example.com
+#   crt: example.crt
+#   key: example.key
+# 
+# ssh-access:
+#   addr: 22
+#   proto: tcp
+#   remote_addr: 1.tcp.ngrok.io:12345
+
+# If you remove or rename the default NASadmin tunnel, please be sure to modify
+# the systemd service @
+#   /lib/systemd/system/fvapp-nastools-ngrok.service
+#   /apps/nastools-ngrok/fvapp-nastools-ngrok.service
+# to point to the new tunnel name.
+# ngrok REQUIRES a configured tunnel to start.
+tunnels:
+  NASadmin:
+    addr: 80
+    bind_tls: false
+    inspect: false
+    proto: http

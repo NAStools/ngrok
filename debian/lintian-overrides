@@ -1,0 +1,11 @@
+## Overrides from NAStools
+# Overrides for ReadyNAS packaging
+nastools-ngrok: non-standard-toplevel-dir
+nastools-ngrok: file-in-unusual-dir
+nastools-ngrok: non-etc-file-marked-as-conffile
+
+# Nothing we can do about these, since they're upstream
+nastools-ngrok: unstripped-binary-or-object
+nastools-ngrok: embedded-library
+nastools-ngrok: hardening-no-relro
+nastools-ngrok: statically-linked-binary

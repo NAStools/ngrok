@@ -1,0 +1,11 @@
+[Unit]
+Description=ngrok secure tunnels
+After=network.target apache2.service
+
+[Service]
+Type=simple
+User=nastools-ngrok
+ExecStart=/apps/nastools-ngrok/bin/ngrok start -config /apps/nastools-ngrok/ngrok.yml NASadmin
+
+[Install]
+WantedBy=multi-user.target

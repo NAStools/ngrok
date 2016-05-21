@@ -1,0 +1,24 @@
+Source: ngrok
+Section: net
+Priority: optional
+Maintainer: NAStools <dev@nas.tools>
+Build-Depends: dpkg-dev (>= 1.16.17),
+               debhelper (>= 9),
+               dh-exec
+Standards-Version: 3.9.4
+Vcs-Browser: https://github.com/nastools/ngrok
+Vcs-Git: git://github.com/nastools/ngrok.git
+Homepage: https://ngrok.com
+
+Package: nastools-ngrok
+Architecture: amd64 armel
+Depends: readynasos (>= 6.5.0),
+         libapache2-mod-proxy-html,
+         libapache2-mod-proxy-wstunnel,
+         ${shlibs:Depends},
+         ${misc:Depends}
+Description: secure introspected tunnels to localhost
+ Expose local servers behind NATs and firewalls to the public internet over
+ secure tunnels. Save time and be more productive. Show off in-progress work
+ for feedback and build webhook integrations with ease. Use ngrok's unique
+ request inspection and replay to iterate quickly.

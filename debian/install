@@ -1,0 +1,9 @@
+#!/usr/bin/dh-exec
+debian/readynas/fvapp-nastools-ngrok.service apps/nastools-ngrok
+debian/readynas/config.xml apps/nastools-ngrok
+debian/readynas/logo.png apps/nastools-ngrok
+debian/readynas/https.conf apps/nastools-ngrok
+debian/readynas/ngrok.yml apps/nastools-ngrok
+www apps/nastools-ngrok
+[amd64] ngrok_amd64 => apps/nastools-ngrok/bin/ngrok
+[armel] ngrok_arm => apps/nastools-ngrok/bin/ngrok

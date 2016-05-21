@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -e
+
+test $DEBIAN_SCRIPT_DEBUG && set -v -x
+
+case "$1" in
+  remove)
+    if $(getent passwd nastools-ngrok >/dev/null 2>&1); then
+      USER_ID=$(id -u nastools-ngrok)
+      rn_nml -d user:$USER_ID
+    fi
+  ;;
+esac
+
+#DEBHELPER#
