@@ -6,7 +6,7 @@ test $DEBIAN_SCRIPT_DEBUG && set -v -x
 
 case "$1" in
   configure)
-    if ! $(getent passwd nastools-ngrok >/dev/null 2>&1); then
+    if ! getent passwd nastools-ngrok >/dev/null 2>&1; then
         rn_nml -a user:nastools-ngrok:users
     fi
     chown -R nastools-ngrok:users /apps/nastools-ngrok
